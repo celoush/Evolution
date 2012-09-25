@@ -1,0 +1,59 @@
+colorWest = "ColorBlue"
+colorEast = "ColorBlue"
+colorGuer = "ColorBlue"
+
+_Wmarkerlist = ["ap","ap1","ap2","ap3","ap4","ap5","ap6","ap7","ap8","ap9","ap10","ap11","ap12","ap13","ap14","ap15","ap16","ap17","ap18","ap19","ap20","ap21","ap22","ap23","ap24","ap25","ap26","ap27","ap28","ap29","ap30","eng1","eng2","eng3","eng4","s1","s2","s3","s4","s5","s6","s7","s8","s9","s10","s11","s12","s13","s14","s15","s16","s17","s18","s19","s20","s21","s22","s23","s24","s25","s26","Pilot1","Pilot2","Pilot3","Pilot4","RESCUE","RESCUE2","Engineer","Engineer2","Engineer3","Engineer4","Engineer5"]
+_Emarkerlist = ["opfor1","opfor2","opfor3","opfor4","opfor5","opfor6","opfor7","opfor8"]
+_Gmarkerlist = ["Pilot1","Pilot2","Pilot3","Pilot4"]
+_markerType = "DOT"
+
+~10
+
+#MarkerTracker
+
+?SIDE Player == WEST : _markerList = _Wmarkerlist
+?SIDE Player == EAST : _markerList = _Emarkerlist
+?SIDE Player == RESISTANCE : _markerList = _Gmarkerlist
+
+?SIDE Player in [WEST,EAST,RESISTANCE] : Goto "Track"
+
+Exit
+
+#Track
+
+_i = 0
+#CreateMarkers
+~.02
+_string = _markerList select _i;
+_marker = format ["%1",_string];
+createMarkerLocal [_marker, getPos Server];
+
+_i = _i + 1;
+
+?_i < count _markerList : goto "CreateMarkers"
+
+_x = 0
+
+#TrackLoop
+~.05
+
+_string = _markerlist Select _x
+_unit = call compile _string
+?Alive Call compile _string : Goto "Mpos"
+
+_string SetMarkerTypeLocal "EMPTY"
+Goto "Skip"
+
+#MPos
+_string SetMarkerTypeLocal _markerType
+_string SetMarkerPosLocal GetPos Call compile _string
+_string setMarkerTextLocal format ["%1",Name _unit];
+_string setMarkerSizeLocal [.4,.4]
+_string setMarkerColorLocal call compile format ["Color%1",side _unit]
+
+#Skip
+_x = _x + 1
+
+?_x > Count _markerList : _x = 0
+
+Goto "TrackLoop"

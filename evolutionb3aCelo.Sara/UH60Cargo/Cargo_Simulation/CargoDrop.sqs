@@ -1,0 +1,38 @@
+_veh = _this select 0
+_vehcargo = nearestObject [_veh, "Car"] 
+
+_vehcargo setvelocity [(velocity _veh select 0), (velocity _veh select 1), (velocity _veh select 2)]
+
+UH60_Cargo_Started = 0
+UH60_Cargo_Drop = 1
+~0.1
+UH60_Cargo_Drop = 0
+
+? (getpos _veh select 2) > 15 && (getpos _veh select 2) < 30 : goto "1"
+? (getpos _veh select 2) > 30 && (getpos _veh select 2) < 50 : goto "2"
+? (getpos _veh select 2) > 50 : goto "3"
+exit
+
+
+#1
+~0.001
+_dam = getDammage _vehcargo 
+? (getpos _vehcargo select 2) < 1 :  _vehcargo setdamage (_dam + 0.2); exit
+goto "1"
+ 
+#2
+~0.001
+_dam = getDammage _vehcargo 
+? (getpos _vehcargo select 2) < 1 :  _vehcargo setdamage (_dam + 0.5); exit
+goto "2"
+
+#3
+~0.001
+_dam = getDammage _vehcargo 
+? (getpos _vehcargo select 2) < 1 :  _vehcargo setdamage (_dam + 1); exit
+goto "3"
+
+
+exit
+
+

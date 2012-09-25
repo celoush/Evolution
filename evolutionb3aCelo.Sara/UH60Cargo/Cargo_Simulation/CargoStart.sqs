@@ -1,0 +1,68 @@
+;//###########################################################
+;//##################COPYRIGHT XTREMLABS GAMESTUDIO#################
+;//###########################################################
+private ["_veh","_vehcargo","_vehcargoclass","_Weight","_vehFuelossratio","_vehPos","_vehPosX","_vehPosY","_vehPosZ","_vehdir","_vehFuel"]
+
+;// Définition Variables
+_veh = _this select 0
+_vehcargo = nearestObject [_veh, "Car"] 
+_vehcargoclass = typeOf _vehcargo
+_Weight = 0.02
+_vehFuelossratio = 0.00001
+
+;// Condition de validation
+? (_vehcargo distance _veh) < 10 : goto "validation"
+
+exit
+
+
+;// **********
+#validation
+
+;// Variable Cargo
+UH60_Cargo_Started = 1
+
+;// Action Drop
+_actioncargodrop = _veh addAction ["Unattach Vehicle", "UH60Cargo\Cargo_Simulation\Cargodrop.sqs", [], 1, true, true, ""];
+
+;// Caractéristiques Poids / Perte Carburant (Moyen/Lourd/)
+? _vehcargoclass == "HMMWV50" || _vehcargoclass == "HMMWVTOW" || _vehcargoclass == "HMMWVMK" || _vehcargoclass == "HMMWV" :  _Weight = 0.05; _vehFuelossratio = 0.00002
+? _vehcargoclass == "Truck5tMG" || _vehcargoclass == "Truck5t" || _vehcargoclass == "Truck5tOpen" || _vehcargoclass == "Truck5tRepair" || _vehcargoclass == "Truck5tReammo" || _vehcargoclass == "Truck5tRefuel" || _vehcargoclass == "Ural" || _vehcargoclass == "UralOpen" || _vehcargoclass == "UralRepair" || _vehcargoclass == "UralReammo" || _vehcargoclass == "UralRefuel" || _vehcargoclass == "UralCivil" || _vehcargoclass == "UralCivil2" || _vehcargoclass == "Bus_city" :  _Weight = 0.1; _vehFuelossratio = 0.00003
+
+
+;// **********
+#loop
+~0.00001
+_vehPos = getPos _veh 
+_vehPosX = _vehPos select 0
+_vehPosY = _vehPos select 1
+_vehPosZ = _vehPos select 2
+_vehdir = getDir _veh
+_vehFuel = fuel _veh
+
+;// Perte de Carburant
+? (getpos _veh select 2) > 11 : _veh setfuel (_vehFuel - _vehFuelossratio)
+
+;// Conditions De Fin
+? UH60_Cargo_Drop == 1 : _veh removeAction _actioncargodrop; exit
+? ! (alive _veh) : exit
+? ! (alive _vehcargo) : _veh removeAction _actioncargodrop; exit
+? _vehFuel == 0 && (getpos _veh select 2) < 11 : _veh removeAction _actioncargodrop; exit
+
+;// Positionnement Cargo
+? (getpos _veh select 2) > 11 : _vehcargo setPos [_vehPosX, _vehPosY, (_vehPosZ) - 11]
+? (getpos _veh select 2) < 11 && ! surfaceIsWater [getpos _veh select 0, getpos _veh select 1] : _vehcargo setPos [_vehPosX, _vehPosY, 0]
+
+_vehcargo setVelocity velocity _veh
+_vehcargo setDir _vehdir
+
+;// Poids Physique Cargo
+? (getpos _veh select 2) > 11 : _veh setvelocity [(velocity _veh select 0), (velocity _veh select 1), (velocity _veh select 2) - _Weight]
+
+goto "loop"
+
+exit
+
+
+
+

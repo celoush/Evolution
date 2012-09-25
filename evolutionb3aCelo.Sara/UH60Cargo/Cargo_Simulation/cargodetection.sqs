@@ -1,0 +1,27 @@
+;//###########################################################
+;//##################COPYRIGHT XTREMLABS GAMESTUDIO#################
+;//###########################################################
+private ["_veh","_nObject","_crewstatus","_countcrewstatus"]
+
+;// Définition Variables
+_veh = _this select 0
+
+;// Variable globale
+UH60_Cargo_Started = 0
+
+
+;// **********
+#loop
+~0.1
+_nObject = nearestObject [_veh, "Car"] 
+_crewstatus = (crew _nObject)
+_countcrewstatus = count _crewstatus 
+
+;// Affichage De L'action
+? (_nObject distance _veh) > 10 : _actioncargodisplayed = 0; _veh removeaction _actioncargo
+? (_nObject distance _veh) < 10 && _actioncargodisplayed == 0 && _countcrewstatus == 0 && UH60_Cargo_Started == 0 : _actioncargo = _veh addAction ["Attach Vehicule", "UH60Cargo\Cargo_Simulation\CargoStart.sqs", [], 1, true, true, ""]; _actioncargodisplayed = 1
+
+;// Supression De L'action Si Mode Cargo Lancé
+? UH60_Cargo_Started == 1 : _veh removeaction _actioncargo
+
+goto "loop"

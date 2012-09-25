@@ -1,0 +1,879 @@
+onLoadMission=E V O L U C E - O V E R L O R D;
+
+
+
+class Header
+{
+ gameType = COOP;            //DM, Team, Coop, CTI
+ minPlayers = 1;             //min # of players the mission supports
+ maxPlayers = 30;            //Max # of players the mission supports
+ playerCountMultipleOf = 1;  //Unknown
+};
+
+
+#include "Dialogs\Common\DialogColorConstants.hpp"
+#include "Dialogs\DialogColorScheme.hpp"
+#include "Dialogs\Common\DialogControlClasses.hpp"
+#include "Dialogs\RecruitSoldierDialog.hpp"
+#include "Dialogs\Support.hpp"
+#include "AAHALO\mouseTracker.hpp"
+#include "Dialogs\YesNoDialog.hpp"
+
+//#include "hpp\quickmap.hpp"
+#include "TeamStatusDialog\TeamStatusDialog.hpp"
+#include "missions\MissionSelectionDialog\MissionSelectionDialog.hpp"
+#include "spect\spectating.hpp"
+
+class CfgRadio
+{
+	sounds[] = {};
+	class MAIN_par
+	{
+		name = "MAIN_par";
+		sound[] = {"null.ogg", db-40, 1.0};
+		title = "PARAISO JE VYČIŠTĚNÉ, DOBRÁ PRÁCE";
+	};
+	class MAIN_som
+	{
+		name = "MAIN_som";
+		sound[] = {"null.ogg", db-40, 1.0};
+		title = "SOMATO JE VYČIŠTĚNÉ, DOBRÁ PRÁCE";
+	};
+	class MAIN_cay
+	{
+		name = "MAIN_cay";
+		sound[] = {"null.ogg", db-40, 1.0};
+		title = "CAYO JE VYČIŠTĚNÉ, DOBRÁ PRÁCE";
+	};
+	class MAIN_dol
+	{
+		name = "MAIN_dol";
+		sound[] = {"null.ogg", db-40, 1.0};
+		title = "DOLORES JE VYČIŠTĚNÉ, DOBRÁ PRÁCE";
+	};
+	class MAIN_ort
+	{
+		name = "MAIN_ort";
+		sound[] = {"null.ogg", db-40, 1.0};
+		title = "ORTEGO JE VYČIŠTĚNÉ, DOBRÁ PRÁCE";
+	};
+	class MAIN_cor
+	{
+		name = "MAIN_cor";
+		sound[] = {"null.ogg", db-40, 1.0};
+		title = "CORAZOL JE VYČIŠTĚNÝ, DOBRÁ PRÁCE";
+	};
+	class MAIN_obr
+	{
+		name = "MAIN_obr";
+		sound[] = {"null.ogg", db-40, 1.0};
+		title = "OBREGAN JE VYČIŠTĚNÝ, DOBRÁ PRÁCE";
+	};
+	class MAIN_bag
+	{
+		name = "MAIN_bag";
+		sound[] = {"null.ogg", db-40, 1.0};
+		title = "BAGANGO JE VYČIŠTĚNÉ, DOBRÁ PRÁCE";
+	};
+	class MAIN_epo
+	{
+		name = "MAIN_epo";
+		sound[] = {"null.ogg", db-40, 1.0};
+		title = "EPONIA JE VYČIŠTĚNÁ, DOBRÁ PRÁCE";
+	};
+	class MAIN_mas
+	{
+		name = "MAIN_mas";
+		sound[] = {"null.ogg", db-40, 1.0};
+		title = "MASBETE JE VYČIŠTĚNÉ, DOBRÁ PRÁCE";
+	};
+	class MAIN_pit
+	{
+		name = "MAIN_pit";
+		sound[] = {"null.ogg", db-40, 1.0};
+		title = "PITA JE VYČIŠTĚNÁ, DOBRÁ PRÁCE";
+	};
+	class SUB_par
+	{
+		name = "SUB_par";
+		sound[] = {"null.ogg", db-40, 1.0};
+		title = "KOMUNIKACE PŘERUŠENA V PARAISU, DOBRÁ PRÁCE";
+	};
+	class SUB_som	
+	{
+		name = "SUB_som";
+		sound[] = {"null.ogg", db-40, 1.0};
+		title = "KOMUNIKACE PŘERUŠENA V SOMATU, DOBRÁ PRÁCE";
+	};	
+	class SUB_cay	
+	{
+		name = "SUB_cay";
+		sound[] = {"null.ogg", db-40, 1.0};
+		title = "KOMUNIKACE PŘERUŠENA V CAYU, DOBRÁ PRÁCE";
+	};	
+	class SUB_dol	
+	{
+		name = "SUB_dol";
+		sound[] = {"null.ogg", db-40, 1.0};
+		title = "KOMUNIKACE PŘERUŠENA V DOLORES, DOBRÁ PRÁCE";
+	};
+	class SUB_obr	
+	{
+		name = "SUB_obr";
+		sound[] = {"null.ogg", db-40, 1.0};
+		title = "KOMUNIKACE PŘERUŠENA V OBREGANU, DOBRÁ PRÁCE";
+	};	
+	class SUB_ort	
+	{
+		name = "SUB_ort";
+		sound[] = {"null.ogg", db-40, 1.0};
+		title = "KOMUNIKACE PŘERUŠENA V ORTEGU, DOBRÁ PRÁCE";
+	};
+	class SUB_cor	
+	{
+		name = "SUB_cor";
+		sound[] = {"null.ogg", db-40, 1.0};
+		title = "KOMUNIKACE PŘERUŠENA V CORAZOLU, DOBRÁ PRÁCE";
+	};
+	class SUB_bag
+	{
+		name = "SUB_bag";
+		sound[] = {"null.ogg", db-40, 1.0};
+		title = "KOMUNIKACE PŘERUŠENA V BAGANGU, DOBRÁ PRÁCE";
+	};
+	class SUB_epo	
+	{
+		name = "SUB_epo";
+		sound[] = {"null.ogg", db-40, 1.0};
+		title = "KOMUNIKACE PŘERUŠENA V EPONII, DOBRÁ PRÁCE";
+	};	
+	class SUB_mas
+	{
+		name = "SUB_mas";
+		sound[] = {"null.ogg", db-40, 1.0};
+		title = "KOMUNIKACE PŘERUŠENA V MASBETE, DOBRÁ PRÁCE";
+	};
+	class SUB_pit	
+	{
+		name = "SUB_pit";
+		sound[] = {"null.ogg", db-40, 1.0};
+		title = "KOMUNIKACE PŘERUŠENA V PITĚ, DOBRÁ PRÁCE";
+	};
+	class SUB_parb
+	{
+		name = "SUB_parb";
+		sound[] = {"null.ogg", db-40, 1.0};
+		title = "DŮSTOJNÍK ZADRŽEN V PARAISU, DOBRÁ PRÁCE";
+	};
+	class SUB_somb	
+	{
+		name = "SUB_somb";
+		sound[] = {"null.ogg", db-40, 1.0};
+		title = "DŮSTOJNÍK ZADRŽEN V SOMATU, DOBRÁ PRÁCE";
+	};	
+	class SUB_cayb	
+	{
+		name = "SUB_cayb";
+		sound[] = {"null.ogg", db-40, 1.0};
+		title = "DŮSTOJNÍK ZADRŽEN V CAYU, DOBRÁ PRÁCE";
+	};	
+	class SUB_dolb	
+	{
+		name = "SUB_dolb";
+		sound[] = {"null.ogg", db-40, 1.0};
+		title = "DŮSTOJNÍK ZADRŽEN V DOLORES, DOBRÁ PRÁCE";
+	};
+	class SUB_obrb	
+	{
+		name = "SUB_obrb";
+		sound[] = {"null.ogg", db-40, 1.0};
+		title = "DŮSTOJNÍK ZADRŽEN V OBREGANU, DOBRÁ PRÁCE";
+	};	
+	class SUB_ortb	
+	{
+		name = "SUB_ortb";
+		sound[] = {"null.ogg", db-40, 1.0};
+		title = "DŮSTOJNÍK ZADRŽEN V ORTEGU, DOBRÁ PRÁCE";
+	};
+	class SUB_corb	
+	{
+		name = "SUB_corb";
+		sound[] = {"null.ogg", db-40, 1.0};
+		title = "DŮSTOJNÍK ZADRŽEN V CORAZOLU, DOBRÁ PRÁCE";
+	};
+	class SUB_bagb
+	{
+		name = "SUB_bagb";
+		sound[] = {"null.ogg", db-40, 1.0};
+		title = "DŮSTOJNÍK ZADRŽEN V BAGANGU, DOBRÁ PRÁCE";
+	};
+	class SUB_epob	
+	{
+		name = "SUB_epob";
+		sound[] = {"null.ogg", db-40, 1.0};
+		title = "DŮSTOJNÍK ZADRŽEN V EPONII, DOBRÁ PRÁCE";
+	};	
+	class SUB_masb
+	{
+		name = "SUB_masb";
+		sound[] = {"null.ogg", db-40, 1.0};
+		title = "DŮSTOJNÍK ZADRŽEN V MASBETE, DOBRÁ PRÁCE";
+	};
+	class SUB_pitb	
+	{
+		name = "SUB_pitb";
+		sound[] = {"null.ogg", db-40, 1.0};
+		title = "DŮSTOJNÍK ZADRŽEN V PITĚ, DOBRÁ PRÁCE";
+	};	
+	class UNIV_r07
+	{
+		name = "UNIV_r07";
+		sound[] = {"UNIV_r07.ogg", db-40, 1.0};
+		title = "$STR_UNIV_r07";
+	};
+	class UNIV_rcoy
+	{
+		name = "UNIV_rcoy";
+		sound[] = {"null.ogg", db-40, 1.0};
+		title = "HODNĚ ŠTĚSTÍ";
+	};
+	class UNIV_mcom
+	{
+		name = "UNIV_mcom";
+		sound[] = {"goodjob.ogg", db-50, 1.0};
+		title = "MISE SPLNĚNA. DOBRÁ PRÁCE!";
+	};
+	class UNIV_asec
+	{
+		name = "UNIV_asec";
+		sound[] = {"null.ogg", db-40, 1.0};
+		title = "OBLAST VYČIŠTĚNA, DOBRÁ PRÁCE";
+	};
+	class UNIV_meet
+	{
+		name = "UNIV_meet";
+		sound[] = {"null.ogg", db-40, 1.0};
+		title = "INFORMÁTOR VYSLECHNUT. NYNÍ ZAÚTOČTE NA TÁBOR";
+	};	
+};
+class CfgSounds
+{
+	sounds[] = {none,Paycall,Recall,Firstcall,testv};
+	class none
+	{
+		name = "none";
+		sound[] = {"none.ogg", db-5, 1.0};
+		titles[] = {};
+	};	
+	class Incoming
+	{
+		name = "Incoming";
+		sound[] = {"Incoming.ogg", db-5, 1.0};
+		titles[] = {};
+	};
+	class Hit1
+	{
+		name = "Hit1";
+		sound[] = {"Hit1.ogg", db-5, 1.0};
+		titles[] = {};
+	};
+	class Hit2
+	{
+		name = "Hit2";
+		sound[] = {"Hit2.ogg", db-5, 1.0};
+		titles[] = {};
+	};
+	class Hit3
+	{
+		name = "Hit3";
+		sound[] = {"Hit3.ogg", db-5, 1.0};
+		titles[] = {};
+	};	
+	class Paycall
+	{
+		name = "Paycall";
+		sound[] = {"Paycall.ogg", db-1, 1.0};
+		titles[] = {};
+	};
+	class Recall
+	{
+		name = "Recall";
+		sound[] = {"Recall.ogg", db-1, 1.0};
+		titles[] = {};
+	};
+	class Firstcall
+	{
+		name = "Firstcall";
+		sound[] = {"Firstcall.ogg", db-40, 1.0};
+		titles[] = {};
+	};
+	class testv
+	{
+		name = "testv";
+		sound[] = {"\ca\sounds\missions\brian\UNIV_v63.ogg", db-05, 1.0};
+		titles[] = {0, "Theheh"};
+	};	
+};
+
+class CfgEnvSounds
+{
+	sounds[] = {War,Disco};
+	class none
+	{
+		name = "none";
+		sound[] = {"", db-10, 1.0};
+		titles[] = {};
+	};		
+	class War
+	{
+		name = "War";
+		sound[] = {"aawar.ogg", db-10, 1.0};
+		titles[] = {};
+	};
+	class Disco
+	{
+		name = "Discos";
+		sound[] = {"Disco.ogg", db-11, 1.0};
+		titles[] = {};
+	};	
+};
+
+class CfgSfx
+{
+	sounds[] = {none};	
+	class War
+	{
+		name = "none";
+		sound[] = {"none.ogg", db-10, 1.0};
+		titles[] = {};
+	};
+};
+
+class CfgIdentities
+{
+    class thedood
+    {
+        name = "thedood";
+        face = "Face20";
+        glasses = "None";
+        speaker = "Dan";
+        pitch = 1.1;
+    };  
+};
+/*
+class RscPicture
+{
+	type = CT_STATIC;
+	idc = -1;
+	style = ST_PICTURE;
+	colorBackground[] = {0, 0, 0, 0};
+	colorText[] = {1, 1, 1, 1};
+	font = Zeppelin32;
+	sizeEx = 0;
+};
+*/
+class Border
+{
+    idc			= -1;
+    type		= 0;
+    style		= 0;
+    colorBackground[]	= {0.00, 0.00, 0.00, 0.20};
+    colorText[]		= {0.00, 0.00, 0.00, 1.00};
+    font		= "TahomaB";
+    sizeEx		= 0.023;
+    h			= 0.02;
+};
+class Border2
+{
+    idc			= -1;
+    type		= 0;
+    style		= 0;
+    colorBackground[]	= {0.00, 0.00, 0.00, 0.50};
+    colorText[]		= {0.00, 0.00, 0.00, 1.00};
+    font		= "TahomaB";
+    sizeEx		= 0.023;
+    h			= 0.02;
+};
+class Border3
+{
+    idc			= -1;
+    type		= 0;
+    style		= 0;
+    colorBackground[]	= {0.00, 0.00, 0.00, 0.00};
+    colorText[]		= {1.00, 1.00, 1.00, 1.00};
+    font		= "TahomaB";
+    sizeEx		= 0.023;
+    h			= 0.02;
+};
+	
+class RscTitles
+{
+
+	titles[] =
+	{
+		"Pvt","Corp","Sgt","Ltn","Cpt","Mjr","Col,Offensive,Defend,Sabotage"
+	};
+	class Pvt
+	{
+		idd=-1;		// ID ... always -1
+		movingEnable = true;
+		duration=10;		// time of the effect (in seconds)
+		fadein=2;
+		name = "Pvt";	// name in editor
+		controls[]=
+		{
+			Bordera,Borderb,Borderc,Picture
+		};
+		class Bordera : Border
+	  	{
+			x 	= 0.80;
+			y	= 0.04;
+			w	= 0.6;
+			h	= 0.10;
+			text	= "";
+    		};		
+		class Borderb : Border2
+	  	{
+			x 	= 0.79;
+			y	= 0.03;
+			w	= 0.6;
+			h	= 0.12;
+			text	= "";
+    		};
+		class Borderc : Border3
+	  	{
+			x 	= 0.88;
+			y	= 0.03;
+			w	= 0.4;
+			h	= 0.12;
+			text	= "PRIVATE";
+    		};    		
+		class Picture : RscPicture			// For pictures
+		{
+			x = 0.80; 
+			y = 0.04; 
+			w = 0.08; 
+			h = 0.10;
+			text = "img\pvt.paa";			// Your picture in the mission directory
+			sizeEx = 0.04;	
+			style=48;
+		};
+	};
+	class Corp
+	{
+		idd=-1;		// ID ... always -1
+		movingEnable = true;
+		duration=10;		// time of the effect (in seconds)
+		fadein=2;
+		name = "Corp";	// name in editor
+		controls[]=
+		{
+			Bordera,Borderb,Borderc,Picture
+		};
+		class Bordera : Border
+	  	{
+			x 	= 0.80;
+			y	= 0.04;
+			w	= 0.6;
+			h	= 0.10;
+			text	= "";
+    		};		
+		class Borderb : Border2
+	  	{
+			x 	= 0.79;
+			y	= 0.03;
+			w	= 0.6;
+			h	= 0.12;
+			text	= "";
+    		};
+		class Borderc : Border3
+	  	{
+			x 	= 0.88;
+			y	= 0.03;
+			w	= 0.4;
+			h	= 0.12;
+			text	= "CORPORAL";
+    		};    		
+		class Picture : RscPicture			// For pictures
+		{
+			x = 0.80; 
+			y = 0.04; 
+			w = 0.08; 
+			h = 0.10;
+			text = "img\corp.paa";			// Your picture in the mission directory
+			sizeEx = 0.04;	
+			style=48;
+		};
+	};
+	class Sgt
+	{
+		idd=-1;		// ID ... always -1
+		movingEnable = true;
+		duration=10;		// time of the effect (in seconds)
+		fadein=2;
+		name = "Sgt";	// name in editor
+		controls[]=
+		{
+			Bordera,Borderb,Borderc,Picture
+		};
+		class Bordera : Border
+	  	{
+			x 	= 0.80;
+			y	= 0.04;
+			w	= 0.6;
+			h	= 0.10;
+			text	= "";
+    		};		
+		class Borderb : Border2
+	  	{
+			x 	= 0.79;
+			y	= 0.03;
+			w	= 0.6;
+			h	= 0.12;
+			text	= "";
+    		};
+		class Borderc : Border3
+	  	{
+			x 	= 0.88;
+			y	= 0.03;
+			w	= 0.4;
+			h	= 0.12;
+			text	= "SERGEANT";
+    		};    		
+		class Picture : RscPicture			// For pictures
+		{
+			x = 0.80; 
+			y = 0.04; 
+			w = 0.08; 
+			h = 0.10;
+			text = "img\sgt.paa";			// Your picture in the mission directory
+			sizeEx = 0.04;	
+			style=48;
+		};
+	};
+	class Ltn
+	{
+		idd=-1;		// ID ... always -1
+		movingEnable = true;
+		duration=10;		// time of the effect (in seconds)
+		fadein=2;
+		name = "Ltn";	// name in editor
+		controls[]=
+		{
+			Bordera,Borderb,Borderc,Picture
+		};
+		class Bordera : Border
+	  	{
+			x 	= 0.80;
+			y	= 0.04;
+			w	= 0.6;
+			h	= 0.10;
+			text	= "";
+    		};		
+		class Borderb : Border2
+	  	{
+			x 	= 0.79;
+			y	= 0.03;
+			w	= 0.6;
+			h	= 0.12;
+			text	= "";
+    		};
+		class Borderc : Border3
+	  	{
+			x 	= 0.88;
+			y	= 0.03;
+			w	= 0.4;
+			h	= 0.12;
+			text	= "LIEUTENANT";
+    		};    		
+		class Picture : RscPicture			// For pictures
+		{
+			x = 0.80; 
+			y = 0.04; 
+			w = 0.08; 
+			h = 0.10;
+			text = "img\ltn.paa";			// Your picture in the mission directory
+			sizeEx = 0.04;	
+			style=48;
+		};
+	};
+	class Cpt
+	{
+		idd=-1;		// ID ... always -1
+		movingEnable = true;
+		duration=10;		// time of the effect (in seconds)
+		fadein=2;
+		name = "Cpt";	// name in editor
+		controls[]=
+		{
+			Bordera,Borderb,Borderc,Picture
+		};
+		class Bordera : Border
+	  	{
+			x 	= 0.80;
+			y	= 0.04;
+			w	= 0.6;
+			h	= 0.10;
+			text	= "";
+    		};		
+		class Borderb : Border2
+	  	{
+			x 	= 0.79;
+			y	= 0.03;
+			w	= 0.6;
+			h	= 0.12;
+			text	= "";
+    		};
+		class Borderc : Border3
+	  	{
+			x 	= 0.88;
+			y	= 0.03;
+			w	= 0.4;
+			h	= 0.12;
+			text	= "CAPTAIN";
+    		};    		
+		class Picture : RscPicture			// For pictures
+		{
+			x = 0.80; 
+			y = 0.04; 
+			w = 0.08; 
+			h = 0.10;
+			text = "img\cpt.paa";			// Your picture in the mission directory
+			sizeEx = 0.04;	
+			style=48;
+		};
+	};
+	class Mjr
+	{
+		idd=-1;		// ID ... always -1
+		movingEnable = true;
+		duration=10;		// time of the effect (in seconds)
+		fadein=2;
+		name = "Mjr";	// name in editor
+		controls[]=
+		{
+			Bordera,Borderb,Borderc,Picture
+		};
+		class Bordera : Border
+	  	{
+			x 	= 0.80;
+			y	= 0.04;
+			w	= 0.6;
+			h	= 0.10;
+			text	= "";
+    		};		
+		class Borderb : Border2
+	  	{
+			x 	= 0.79;
+			y	= 0.03;
+			w	= 0.6;
+			h	= 0.12;
+			text	= "";
+    		};
+		class Borderc : Border3
+	  	{
+			x 	= 0.88;
+			y	= 0.03;
+			w	= 0.4;
+			h	= 0.12;
+			text	= "MAJOR";
+    		};    		
+		class Picture : RscPicture			// For pictures
+		{
+			x = 0.80; 
+			y = 0.04; 
+			w = 0.08; 
+			h = 0.10;
+			text = "img\mjr.paa";			// Your picture in the mission directory
+			sizeEx = 0.04;	
+			style=48;
+		};
+	};
+	class Col
+	{
+		idd=-1;		// ID ... always -1
+		movingEnable = true;
+		duration=10;		// time of the effect (in seconds)
+		fadein=2;
+		name = "Col";	// name in editor
+		controls[]=
+		{
+			Bordera,Borderb,Borderc,Picture
+		};
+		class Bordera : Border
+	  	{
+			x 	= 0.80;
+			y	= 0.04;
+			w	= 0.6;
+			h	= 0.10;
+			text	= "";
+    		};		
+		class Borderb : Border2
+	  	{
+			x 	= 0.79;
+			y	= 0.03;
+			w	= 0.6;
+			h	= 0.12;
+			text	= "";
+    		};
+		class Borderc : Border3
+	  	{
+			x 	= 0.88;
+			y	= 0.03;
+			w	= 0.4;
+			h	= 0.12;
+			text	= "COLONEL";
+    		};    		
+		class Picture : RscPicture			// For pictures
+		{
+			x = 0.80; 
+			y = 0.04; 
+			w = 0.08; 
+			h = 0.10;
+			text = "img\col.paa";			// Your picture in the mission directory
+			sizeEx = 0.04;	
+			style=48;
+		};
+	};
+	class Evo
+	{
+		idd=-1;		// ID ... always -1
+		movingEnable = true;
+		duration=2;		// time of the effect (in seconds)
+		fadein=1;
+		name = "Evo";	// name in editor
+		controls[]=
+		{
+			Picture
+		};   		
+		class Picture : RscPicture			// For pictures
+		{
+			x = 0.30; 
+			y = 0.50; 
+			w = 0.40; 
+			h = 0.05;
+			text = "img\evo.paa";			// Your picture in the mission directory
+			sizeEx = 0.04;	
+			style=48;
+		};
+	};
+	class Offensive
+	{
+		idd=-1;		// ID ... always -1
+		movingEnable = true;
+		duration=6;		// time of the effect (in seconds)
+		fadein=0;
+		name = "Offensive";	// name in editor
+		controls[]=
+		{
+			Picture
+		};    		
+		class Picture : RscPicture			// For pictures
+		{
+			x = 0.922; 
+			y = 0.40;
+			w = 0.06; 
+			h = 0.08;
+			text = "img\offensive.paa";			// Your picture in the mission directory
+			sizeEx = 0.04;	
+			style=48;
+		};
+	};
+	class Defend
+	{
+		idd=-1;		// ID ... always -1
+		movingEnable = true;
+		duration=6;		// time of the effect (in seconds)
+		fadein=0;
+		name = "defend";	// name in editor
+		controls[]=
+		{
+			Picture
+		};    		
+		class Picture : RscPicture			// For pictures
+		{
+			x = 0.922; 
+			y = 0.40;
+			w = 0.06; 
+			h = 0.08;
+			text = "img\defend.paa";			// Your picture in the mission directory
+			sizeEx = 0.04;	
+			style=48;
+		};
+	};
+	class Sabotage
+	{
+		idd=-1;		// ID ... always -1
+		movingEnable = true;
+		duration=6;		// time of the effect (in seconds)
+		fadein=0;
+		name = "Sabotage";	// name in editor
+		controls[]=
+		{
+			Picture
+		};    		
+		class Picture : RscPicture			// For pictures
+		{
+			x = 0.922; 
+			y = 0.40;
+			w = 0.06; 
+			h = 0.08;
+			text = "img\sabotage.paa";			// Your picture in the mission directory
+			sizeEx = 0.04;	
+			style=48;
+		};
+	};	
+};
+/*
+class RscText
+{
+	type = 0;
+	idc = -1;
+	style = 0;
+	h = 0.04;
+	colorBackground[] = {0, 0, 0, 0};
+	colorText[] = {TextColor, 0.75};
+ 	font = "TahomaB";
+	sizeEx = 0.020;
+};
+*/
+class RscMisCam
+{
+	idd = 50001;
+	movingEnable = true;
+	controlsBackground[]=
+	{
+		Background1
+	};
+	class Background1 : RscPicture
+	{
+		idc = 1047001;
+		style = 128;
+		x = 0.02;
+		y = 0.02;
+		w = 1.00;
+		h = 1.00;
+		text = "";
+		colorBackground[] = {0, 0, 0, 0.0};
+	};
+};
+
+
+titleParam1="TimeScale | Respawn | Lives";
+valuesParam1[]={0,1,2,3,4,5,6,7};
+defvalueParam1=2;
+textsParam1[]={"24 Hour Day","4 Hour Day","24 Hour Day - MH6-R","4 Hour Day - MH6-R","24 Hour Day - MH6-R - 500 Lives","4 Hour Day - MH6-R - 500 Lives","24 Hour Day - MH6-R - No AI","24 Hour Day - MH6-R - Infantry"};
+
+titleParam2="Time Of Day";
+valuesParam2[]={5,8,11,14,17,20,23,2};
+defvalueParam2=8;
+textsParam2[]={"06:00","09:00","12:00","15:00","18:00","21:00","24:00","03:00"};
+//////////////////////////////
+estimatedTimeLeft = 600;
+respawn="3";
+respawndelay=10;
+debriefing = 1;
+disabledAI=1;
+showGPS=1;
+showRadio=1;
+//briefing=1;

@@ -1,0 +1,18 @@
+;by Nightmare [SWAF]
+;Nightmare@d-vogler.de
+
+;----------------------------------------------
+
+#start
+
+#Loop
+~1
+	"mhq_1" SetMarkerPos (getPos MR)
+
+
+?startagain : exit
+
+goto "Loop"
+
+#end
+exit
